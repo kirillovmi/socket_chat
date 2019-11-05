@@ -3,7 +3,7 @@ const WebSocket = require("ws");
 const path = require("path");
 
 const serv = express()
-    .use((req, res) => res.sendFile(__dirname, "index.html"))
+    .use((req, res) => res.sendFile(path.join(__dirname, 'index.html')))
     .listen(process.env.PORT || 3000);
 
 const server = new WebSocket.Server({ serv });

@@ -1,5 +1,5 @@
 const WebSocket = require("ws");
-const server = new WebSocket.Server({port: 3000});
+const server = new WebSocket.Server({port: process.env.PORT || 3000});
 
 server.on("connection", (ws) => {
     ws.on("message", (message) => {

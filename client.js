@@ -4,7 +4,7 @@ const form = document.getElementById("form");
 const message = document.getElementById("message");
 
 
-const ws = new WebSocket("ws://kirillov-socket.herokuapp.com/");
+const ws = new WebSocket(location.origin.replace(/^http/, 'ws'));
 
 function setStatus(value) {
     status.innerHTML = value;

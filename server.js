@@ -1,5 +1,12 @@
+const express = require("express");
 const WebSocket = require("ws");
-const server = new WebSocket.Server({port: process.env.PORT || 3000});
+const path = require("path");
+
+const serv = express()
+    .use((req, res) => res.sendFile(__dirname, "index.html"))
+    .listen(process.env.PORT || 3000);
+
+const server = new WebSocket.Server({ serv });
 
 server.on("connection", (ws) => {
     ws.on("message", (message) => {

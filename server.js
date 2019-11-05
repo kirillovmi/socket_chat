@@ -2,19 +2,28 @@ const express = require("express");
 const WebSocket = require("ws");
 const path = require("path");
 
-const serv = express()
-    .use((req, res) => res.sendFile(path.join(__dirname, 'index.html')))
-    .listen(process.env.PORT || 3000);
+const app = express();
+const expressWs = require('express-ws')(app);
 
-const server = new WebSocket.Server({ serv });
+const port = process.env.PORT || 3000;
 
-server.on("connection", (ws) => {
-    ws.on("message", (message) => {
-        server.clients.forEach(client => {
-            if(client.readyState === WebSocket.OPEN) {
-                client.send(message);
-            }
-        });
+app.use(express.static(__dirname + '/'));
+
+let server = expressWs.getWss("/");
+
+app.ws('/', function (ws, req) {
+    ws.on("message", message => {
+        if (message === 'exit') {
+            ws.close()
+        } else {
+            server.clients.forEach(client => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(message);
+                }
+            });
+        }
     });
-    ws.send("Welcome to chat");
+    ws.send("Welcome");
 });
+
+app.listen(port);
